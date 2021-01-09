@@ -1,0 +1,146 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:5291909865695437115",
+      "lastPropertyId": "11:3491265609291895169",
+      "name": "Supplier",
+      "properties": [
+        {
+          "id": "1:9172043553749084077",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2846305506722823546",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:7551069211440709596",
+          "name": "company",
+          "type": 9
+        },
+        {
+          "id": "4:1390636114044556466",
+          "name": "contactno",
+          "type": 9
+        },
+        {
+          "id": "5:7070062189112636068",
+          "name": "email",
+          "type": 9
+        },
+        {
+          "id": "6:2297777727104430331",
+          "name": "street",
+          "type": 9
+        },
+        {
+          "id": "7:7985988254310566125",
+          "name": "city",
+          "type": 9
+        },
+        {
+          "id": "8:2116264621351554170",
+          "name": "state",
+          "type": 9
+        },
+        {
+          "id": "9:6647985516814413839",
+          "name": "country",
+          "type": 9
+        },
+        {
+          "id": "10:245247915584436940",
+          "name": "bank",
+          "type": 9
+        },
+        {
+          "id": "11:3491265609291895169",
+          "name": "notes",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:7179915697512177995",
+      "lastPropertyId": "11:2756606051510427201",
+      "name": "Customer",
+      "properties": [
+        {
+          "id": "1:7761550870686672010",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5556390188254025827",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:3062980481562534026",
+          "name": "company",
+          "type": 9
+        },
+        {
+          "id": "4:5158857491747032963",
+          "name": "contact",
+          "type": 9
+        },
+        {
+          "id": "5:7888064995596074491",
+          "name": "email",
+          "type": 9
+        },
+        {
+          "id": "6:1872317445189730790",
+          "name": "street",
+          "type": 9
+        },
+        {
+          "id": "7:5293587123566620351",
+          "name": "city",
+          "type": 9
+        },
+        {
+          "id": "8:253078221719658347",
+          "name": "state",
+          "type": 9
+        },
+        {
+          "id": "9:3808852683907227666",
+          "name": "country",
+          "type": 9
+        },
+        {
+          "id": "10:142062892482339290",
+          "name": "bank",
+          "type": 9
+        },
+        {
+          "id": "11:2756606051510427201",
+          "name": "notes",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:7179915697512177995",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
