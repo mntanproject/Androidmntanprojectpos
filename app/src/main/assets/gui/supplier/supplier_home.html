@@ -7,13 +7,17 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="/assets/images/favicon.ico">
-    <script src="/assets/js/init-page.js"></script>
+    <script>
+        const absolutePath = 'file:///android_asset/gui'
+        const appendAbsolutePath = 1
+
+    </script>
+    <script src="file:///android_asset/gui/assets/js/init-page.js"></script>
 </head>
 
 <body id="body" class="bg-my-light vh-100 d-flex flex-column">
 
-    <script src="/assets/js/header.js"></script>
-
+    <!--    <script src="/assets/js/header.js"></script>-->
     <div class="container">
 
         <!-- page content -->
@@ -51,6 +55,7 @@
                 float: right;
                 color: #fff;
             }
+
         </style>
 
 
@@ -142,16 +147,18 @@
 
 
 
-
-    <script src="/assets/js/footer.js"></script>
     <script>
         window.addEventListener('load', function() {
 
             var supplierScript = ['/assets/js/pos-api/supplier/supplier.js', '/assets/js/pos-api/pagination.js', '/assets/js/pos-api/supplier/supplier.home.js'];
             generateScript(supplierScript);
         })
+
     </script>
 
 
 
-</body></html>
+
+</body>
+
+</html>

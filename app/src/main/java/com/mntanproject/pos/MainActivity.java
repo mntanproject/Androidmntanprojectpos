@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         myWebView.setWebChromeClient(new WebChromeClient());
         myWebView.setWebViewClient(new WebViewClient());
-        myWebView.loadUrl("file:///android_asset/gui/home.html");
+        myWebView.loadUrl("file:///android_asset/gui/supplier/supplier_home.html");
         // http://html5test.com/
         //myWebView.loadUrl("file:///android_asset/gui2/index.html");
         myWebView.setWebContentsDebuggingEnabled(true);
