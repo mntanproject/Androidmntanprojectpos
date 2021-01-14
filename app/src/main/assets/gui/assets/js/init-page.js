@@ -34,9 +34,37 @@ var generateCss = function (arrCss) {
 
 var generateHeader = function () {
     var header = document.createElement('header');
+
+    let nav = document.createElement('nav');
+    let navContainer = document.createElement('div');
+    navContainer.className = 'container-fluid'
+
+    nav.className = 'navbar navbar-dark bg-primary fixed-top'
+    let navBrand = document.createElement('a');
+    navBrand.className = 'navbar-brand'
+    navBrand.href = '/home.html'
+
+
+    let navLogo = document.createElement('img');
+    navLogo.src = '/assets/images/logo.png'
+    navLogo.width = 30
+    navLogo.height = 30
+    navLogo.setAttribute('alt', 'Home')
+    navLogo.setAttribute('loading', 'lazy')
+    navLogo.className = 'd-inline-block align-top mr-1'
+    if (appendAbsolutePath == 1) {
+        navLogo.src = absolutePath + '/assets/images/logo.png'
+    }
+
+    navBrand.append(navLogo)
+    let navText = document.createTextNode('Point of sales')
+    navBrand.appendChild(navText)
+    navContainer.append(navBrand)
+    nav.append(navContainer)
+    header.append(nav)
     //header.class = 'footer mt-auto py-3';
-    header.innerHTML = '<nav class="navbar navbar-dark bg-primary fixed-top"><div class="container-fluid"><a class=" navbar-brand" href="/home.html"><img src="/assets/images/logo.png" width="30" height="30" class="d-inline-block align-top mr-1" alt="" loading="lazy">Point of sales</a></div></nav><div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-centered">    <div class="modal-content"><div class="modal-header"><div id="myModalTitle" class="modal-title"></div>  <button type="button" class="btn-close" onclick="hideModal()" aria-label="Close"></button></div><div id="myModalBody" class="modal-body"></div><div class="modal-footer"><button id="btnModalNo" type="button" class="btn btn-secondary">No</button><button id="btnModalYes" type="button" class="btn btn-primary">Yes</button>   </div></div></div></div>';
-    document.body.appendChild(header);
+    //    header.innerHTML = '<nav class=""><div class="container-fluid"><a class=" " href="/home.html"><img src="" width="30" height="30" class="" alt="" loading="lazy">Point of sales</a></div></nav>';
+    document.body.prepend(header);
 }
 
 var generateFooter = function () {
@@ -85,7 +113,7 @@ window.onload = () => {
     generateTitle();
 
     var scripts = ['/assets/js/popper.min.js',
- '/assets/js/bootstrap.min.js', '/assets/js/sweetalert2.all.min.js', '/assets/js/pos-api/genericApi.js'];
+ '/assets/js/bootstrap.min.js', '/assets/js/sweetalert2.all.min.js'];
     //var scripts = ['/assets/js/popper.min.js', '/assets/js/bootstrap.min.js'];
     generateFooter();
     generateScript(scripts);

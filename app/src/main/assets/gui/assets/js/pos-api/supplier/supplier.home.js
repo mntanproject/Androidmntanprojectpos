@@ -12,8 +12,11 @@ async function getData(url, mnCallback) {
     }).then(function (response) {
         return response.json()
     }).then(function (result) {
-        result.forEach(mnCallback);
-
+        if (result.length == 0) {
+            emptyMessage()
+        } else {
+            result.forEach(mnCallback);
+        }
     }).catch(function (error) {
         alert('error get data supplier_home.js' + error)
     });
@@ -21,25 +24,19 @@ async function getData(url, mnCallback) {
 
 var displayData = function (offset, limit, order, descending) {
     document.querySelectorAll('.supplier-data').forEach(e => e.remove());
-    let url = 'http://localhost:9000/api/supplier/paginator/'
-    getData(url + 'offset=' + offset + '&limit=' + limit + '&order=' + order + '&descending=' + descending, generateSupplierHtml)
+
+    let url = MnSupplier.paginatorUrl
+    let searchTerm = document.getElementById('search').value
+    url = url + 'offset=' + offset + '&limit=' + limit + '&order=' + order + '&descending=' + descending
+    if (searchTerm != '') {
+        url = url + '&search=' + searchTerm
+    }
+    getData(url, generateSupplierHtml)
 }
-
-//function sort() {
-//    var url = 'http://localhost:9000/api/supplier/size/all'
-//    var numRows = document.querySelector('input[name = "btnradiorows"]:checked').value;
-//    var pagination = new MnPagination(0, numRows, 1, 3, 'paginatorTop', 'id', '0', displayData)
-//
-//    getPagination(url, pagination, init)
-//
-//}
-
-
 
 function init(data, pagination) {
     pagination.size = data.totalsize
     var numRows = document.querySelector('input[name = "btnradiorows"]:checked').value;
-    //    var pagination = new MnPagination(data.totalsize, numRows, pagination.currentPage, pagination.maxPage, 'paginatorTop', pagination.order, pagination.descending, displayData)
     document.querySelectorAll('ul.pagination li.page-item').forEach(e => e.remove());
     generatePagination(pagination)
     let offset = (pagination.currentPage - 1) * pagination.rowsPerPage
@@ -49,9 +46,31 @@ function init(data, pagination) {
     displayData(offset, limit, order, descending)
 }
 
+function emptyMessage() {
+    var wrapper = document.getElementById('accordionFlushExample')
+    var accItem = document.createElement("div");
+    var accHeader = document.createElement('div');
+    var accHeaderLink = document.createElement('a');
+    var accCollapse = document.createElement('div');
+    var accCollapseItem = document.createElement('div');
+
+    accItem.className = 'accordion-item supplier-data'
+    accHeaderLink.id = 'flush-heading-empty'
+    accHeaderLink.setAttribute('role', 'button')
+    accHeaderLink.setAttribute('aria-expanded', 'false')
+    accHeaderLink.innerHTML = '<div class="d-flex justify-content-center pt-1">No Record Found</div>'
+
+    accHeader.appendChild(accHeaderLink)
+    accItem.appendChild(accHeader)
+    accItem.appendChild(accCollapse)
+    wrapper.appendChild(accItem)
+
+
+}
 
 
 function generateSupplierHtml(item, index) {
+
     var supp = MnSupplier.fromJson(item);
     var wrapper = document.getElementById('accordionFlushExample')
     var accItem = document.createElement("div");
@@ -71,7 +90,7 @@ function generateSupplierHtml(item, index) {
     accHeaderLink.setAttribute('role', 'button')
     accHeaderLink.setAttribute('aria-expanded', 'false')
     accHeaderLink.setAttribute('aria-controls', '#flush-collapse' + index)
-    accHeaderLink.innerHTML = '<div class="container-fluid p-0 m-0"><dl class="row m-0"><dt class="col-3 p-0 m-0 text-left d-md-none d-sm-block">Id</dt>                                    <dd class="col-9 col-md-1 text-left border-right-md">' + supp.id + '</dd><dt class="col-3 p-0 m-0 text-left d-md-none d-sm-block">Company</dt>                                    <dd class="col-9 col-md-3 text-left border-right-md">' + supp.company + supp.id + '</dd><dt class="col-3 p-0 m-0 text-left d-md-none d-sm-block">Sales</dt><dd class="col-9 col-md-4 text-left border-right-md">' + supp.name + '</dd><dt class="col-3 p-0 m-0 text-left d-md-none d-sm-block">City</dt><dd class="col-9 col-md-4 text-left">' + supp.city + '</dd></dl></div></a>'
+    accHeaderLink.innerHTML = '<div class="container-fluid p-0 m-0"><dl class="row m-0"><dt class="col-3 p-0 m-0 text-left d-md-none d-sm-block">Id</dt>                                    <dd class="col-9 col-md-1 text-left border-right-md">' + supp.id + '</dd><dt class="col-3 p-0 m-0 text-left d-md-none d-sm-block">Company</dt>                                    <dd class="col-9 col-md-3 text-left border-right-md">' + supp.company + supp.id + '</dd><dt class="col-3 p-0 m-0 text-left d-md-none d-sm-block">Sales</dt><dd class="col-9 col-md-4 text-left border-right-md">' + supp.name + '</dd><dt class="col-3 p-0 m-0 text-left d-md-none d-sm-block">City</dt><dd class="col-9 col-md-4 text-left">' + supp.city + '</dd></dl></div>'
 
     accCollapse.className = 'accordion-collapse collapse'
     accCollapse.id = 'flush-collapse' + index
@@ -92,25 +111,6 @@ function generateSupplierHtml(item, index) {
     accCollapseContentContainer.className = 'row'
     accCollapseContentButtonContainer.className = '"d-flex flex-row-reverse bd-highlight'
 
-
-
-
-    /*var keys = Object.keys(supp);
-    for (var i = 0; i < keys.length; i++) {
-        console.log('keys:' + i + ' - ' + supp[keys[i]])
-
-        accCollapseContentDt = document.createElement('dt')
-        accCollapseContentDd = document.createElement('dd')
-        accCollapseContentDt.className = 'col-2 small pt-01'
-        accCollapseContentDd.className = 'col-10'
-        accCollapseContentDt.innerHTML = keys[i]
-        accCollapseContentDd.innerHTML = supp[keys[i]]
-
-
-        accCollapseContentContainer.appendChild(accCollapseContentDt)
-        accCollapseContentContainer.appendChild(accCollapseContentDd)
-
-    }*/
     accCollapseContentContainer.innerHTML = '<dt class="col-2 small p-0">Contact</dt><dd class="col-10 small">' + supp.contactno + '</dd><dt class="col-2 small p-0">Email</dt><dd class="col-10 small">' + supp.email + '</dd><dt class="col-2 small p-0">Street</dt><dd class="col-10 small">' + supp.street + '</dd><dt class="col-2 small p-0">City</dt><dd class="col-10 small">' + supp.city + '</dd><dt class="col-2 small p-0">State</dt><dd class="col-10 small">' + supp.state + '</dd><dt class="col-2 small p-0">Country</dt><dd class="col-10 small">' + supp.country + '</dd><dt class="col-2 small p-0">Bank</dt><dd class="col-10 small">' + supp.bank + '</dd><dt class="col-2 small p-0">Note</dt><dd class="col-10 small">' + supp.notes + '</dd>'
 
     accCollapseContentButtonEdit = document.createElement('button')
@@ -132,7 +132,7 @@ function generateSupplierHtml(item, index) {
             confirmButtonText: 'Yes',
             showLoaderOnConfirm: true,
             preConfirm: () => {
-                return fetch('http://localhost:9000/api/supplier/delete/id=' + supp.id)
+                return fetch(MnSupplier.deleteUrl + 'id=' + supp.id)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(response.statusText)
@@ -163,69 +163,19 @@ function generateSupplierHtml(item, index) {
     accCollapseContentButtonContainer.appendChild(accCollapseContentButtonEdit)
     accCollapseContentContainer.appendChild(accCollapseContentButtonContainer)
 
-    //accCollapseContentContainer.appendChild(accCollapseContentRow)
     accCollapseItemContainer.appendChild(accCollapseContentContainer)
     accCollapseItem.appendChild(accCollapseItemContainer)
     accCollapse.appendChild(accCollapseItem)
 
-    //accCollapse.innerHTML = '<div class=""><dl class="row"><dt class="">Contact</dt><dd class="">' + supp.contactno + '</dd><dt class="col-2 small pt-01">Email</dt><dd class="col-10">' + supp.email + '</dd><dt class="col-2 small pt-01">Street</dt><dd class="col-10">' + supp.street + '</dd><dt class="col-2 small pt-01">City</dt><dd class="col-10">' + supp.city + '</dd><dt class="col-2 small pt-01">State</dt><dd class="col-10">' + supp.state + '</dd><dt class="col-2 small pt-01">Country&nbsp;</dt><dd class="col-10">' + supp.country + '</dd><dt class="col-2 small pt-01">Bank</dt><dd class="col-10">' + supp.bank + '</dd><dt class="col-2 small pt-01">Note</dt><dd class="col-10">' + supp.notes + '</dd></dl><div class="d-flex flex-row-reverse bd-highlight"><button  class="btn btn-primary mr-1" type="button" id="button-addon2"><i class="fas fa-trash-alt"></i></button><button class="btn btn-primary ml-1 mr-1" type="button" id="button-addon3"><i class="fas fa-pencil-alt"></i></button></div></div></div>'
 
     accHeader.appendChild(accHeaderLink)
     accItem.appendChild(accHeader)
     accItem.appendChild(accCollapse)
     wrapper.appendChild(accItem)
 
-    /*
-        accItem.innerHTML = '<div class="accordion-header" id="flush-heading' + index + '">\
-                        <a class="accordion-button collapsed btn" data-bs-toggle="collapse" href="#flush-collapse' + index + '" role="button" aria-expanded="false" aria-controls="#flush-collapse' + index + '">\
-                            <div class="container-fluid p-0 m-0">\
-                                <dl class="row m-0">\
-     <dt class="col-3 p-0 m-0 text-left d-md-none d-sm-block">Id</dt>\
-                                    <dd class="col-9 col-md-1 text-left border-right-md">' + supp.id + '</dd>\
-                                    <dt class="col-3 p-0 m-0 text-left d-md-none d-sm-block">Company</dt>\
-                                    <dd class="col-9 col-md-3 text-left border-right-md">' + supp.company + supp.id + '</dd>\
-                                    <dt class="col-3 p-0 m-0 text-left d-md-none d-sm-block">Sales</dt>\
-                                    <dd class="col-9 col-md-4 text-left border-right-md">' + supp.name + '</dd>\
-                                    <dt class="col-3 p-0 m-0 text-left d-md-none d-sm-block">City</dt>\
-                                    <dd class="col-9 col-md-4 text-left">' + supp.city + '</dd>\
-                                </dl>\
-                            </div>\
-                        </a>\
-                    </div>\
-                    <div id="flush-collapse' + index + '" class="accordion-collapse collapse" aria-labelledby="flush-heading' + index + '" data-bs-parent="#accordionFlushExample">\
-                        <div class="accordion-body bg-light">\
-                            <div class="container-fluid">\
-                                <dl class="row">\
-                                    <dt class="col-2 small pt-01">Contact</dt>\
-                                    <dd class="col-10">' + supp.contactno + '</dd>\
-                                    <dt class="col-2 small pt-01">Email</dt>\
-                                    <dd class="col-10">' + supp.email + '</dd>\
-                                    <dt class="col-2 small pt-01">Street</dt>\
-                                    <dd class="col-10">' + supp.street + '</dd>\
-                                    <dt class="col-2 small pt-01">City</dt>\
-                                    <dd class="col-10">' + supp.city + '</dd>\
-                                    <dt class="col-2 small pt-01">State</dt>\
-                                    <dd class="col-10">' + supp.state + '</dd>\
-                                    <dt class="col-2 small pt-01">Country&nbsp;</dt>\
-                                    <dd class="col-10">' + supp.country + '</dd>\
-                                    <dt class="col-2 small pt-01">Bank</dt>\
-                                    <dd class="col-10">' + supp.bank + '</dd>\
-                                    <dt class="col-2 small pt-01">Note</dt>\
-                                    <dd class="col-10">' + supp.notes + '</dd>\
-                                </dl>\
-                                <div class="d-flex flex-row-reverse bd-highlight">\
-                                    <button class="btn btn-primary mr-1" type="button" id="button-addon2"><i class="fas fa-trash-alt"></i></button>\
-                                    <button class="btn btn-primary ml-1 mr-1" type="button" id="button-addon3"><i class="fas fa-pencil-alt"></i></button>\
-                                </div>\
-                            </div>\
-                        </div>\
-                    </div>'
-    */
-    //    wrapper.appendChild(accItem)
 
 }
 
-//const sortOrder = document.getElementById('suppId')
 var sortables = document.getElementsByClassName("sortable");
 for (var i = 0; i < sortables.length; i++) {
     //alert(sortables[i].id)
@@ -234,14 +184,20 @@ for (var i = 0; i < sortables.length; i++) {
 
 
 
-var url = 'http://localhost:9000/api/supplier/size/all'
+var url = MnSupplier.sizeUrl + 'all'
 var numRows = document.querySelector('input[name = "btnradiorows"]:checked').value;
 var paginationInit = new MnPagination(0, numRows, 1, 3, 'paginatorTop', 'id', '1', displayData)
-getPagination(url, paginationInit, init)
+paginationInit.paginationUrl = url
+getPagination(paginationInit.paginationUrl, paginationInit, init)
 
 function noRowsChanged() {
-
-    var url = 'http://localhost:9000/api/supplier/size/all'
+    let url = MnSupplier.sizeUrl
+    let searchTerm = document.getElementById('search').value
+    if (searchTerm == '') {
+        url = url + 'all'
+    } else {
+        url = url + 'search=' + searchTerm
+    }
     var numRows = document.querySelector('input[name = "btnradiorows"]:checked').value;
     //var pagination = new MnPagination(0, numRows, 1, 3, 'paginatorTop', 'id', '', displayData)
     paginationInit.rowsPerPage = numRows
@@ -253,9 +209,14 @@ function noRowsChanged() {
 
 function changeOrder() {
     let from = this.id
-    var url = 'http://localhost:9000/api/supplier/size/all'
+    let url = MnSupplier.sizeUrl
+    let searchTerm = document.getElementById('search').value
+    if (searchTerm == '') {
+        url = url + 'all'
+    } else {
+        url = url + 'search=' + searchTerm
+    }
     var numRows = document.querySelector('input[name = "btnradiorows"]:checked').value;
-    //    var pagination = new MnPagination(0, numRows, 1, 3, 'paginatorTop', 'id', '1', displayData);
     var desc = 0;
 
 
@@ -283,5 +244,14 @@ function changeOrder() {
     paginationInit.descending = desc
     getPagination(url, paginationInit, init)
 
+
+}
+
+function search() {
+    var url = MnSupplier.sizeUrl + 'search=' + document.getElementById('search').value
+    var numRows = document.querySelector('input[name = "btnradiorows"]:checked').value;
+    paginationInit.rowsPerPage = numRows
+    paginationInit.currentPage = 1
+    getPagination(url, paginationInit, init)
 
 }
